@@ -1,0 +1,12 @@
+.popup__photo-name {
+  max-width: 291px;
+  margin: 10px auto 0 0;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #FFFFFF;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

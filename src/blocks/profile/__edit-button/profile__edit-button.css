@@ -1,0 +1,10 @@
+.profile__edit-button {
+  width: 10px;
+}
+
+@media screen and (max-width:400px) {
+  .profile__edit-button {
+    width: 7.5px;
+    padding: 25%;
+  }
+}

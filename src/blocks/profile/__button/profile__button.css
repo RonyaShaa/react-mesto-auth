@@ -1,0 +1,26 @@
+.profile__button {
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  top: 15px;
+  right: 0px;
+  padding: 0;
+  border: 1px solid white;
+  box-sizing: border-box;
+  background-color: black;
+  transition: 1s ease;
+}
+
+.profile__button:hover {
+opacity: 0.6;
+cursor: pointer; 
+}
+
+@media screen and (max-width:400px) {
+  .profile__button {
+    width: 18px;
+    height: 18px;
+    top: 9px;
+    right: 27px;
+  }
+}

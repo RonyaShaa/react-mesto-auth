@@ -1,0 +1,27 @@
+.profile__photo {
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+}
+
+@media screen and (max-width:900px){
+  .profile__photo {
+    margin: 0 32px 0 20px;
+  }
+}
+
+@media screen and (max-width:700px){
+  .profile__photo {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media screen and (max-width:600px){
+  .profile__photo {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,31 @@
+.popup__button-yes{
+  padding: 0;
+  margin: 15px 36px 32px;
+  border: none;
+  border-radius: 2px;
+  width: 358px;
+  height: 50px;
+  background-color: black;
+  color: white;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  text-align: center;
+}
+  
+.popup__button-yes:hover {
+  cursor: pointer;
+  opacity: 0.8;
+  transition: 0.8s ease;
+}
+  
+@media screen and (max-width:510px){
+  .popup__button-yes {
+    width: 238px;
+    height: 46px;
+    font-size: 14px;
+    line-height: 17px;
+    margin: 0 22px 25px;
+  }
+}
