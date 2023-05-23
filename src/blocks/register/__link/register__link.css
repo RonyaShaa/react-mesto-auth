@@ -1,0 +1,14 @@
+.register__link {
+  text-decoration: none;
+  color: white;
+  margin-top: 15px;
+  max-width: 358px;
+  min-height: 17px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+
+  /* identical to box height */
+  text-align: center;
+}

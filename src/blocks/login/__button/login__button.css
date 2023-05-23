@@ -1,0 +1,9 @@
+.login__button {
+max-width: 358px;
+min-height: 50px;
+margin-top: 216px;
+background: #FFFFFF;
+border-radius: 2px;
+border: none;
+cursor: pointer;
+}

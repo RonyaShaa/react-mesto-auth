@@ -1,4 +1,5 @@
 import React from 'react';
+import { Route, Routes, Navigate, useNavigate} from 'react-router-dom';
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
@@ -9,6 +10,10 @@ import { api } from '../utils/Api.js';
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
+import Login from './Login';
+import Register from './Register';
+import InfoTooltip from './InfoTooltip';
+import {ProtectedRoute} from './ProtectedRoute'
 
 
 function App() {
@@ -21,6 +26,8 @@ function App() {
   //добавим в стейт переменную состояния текущего пользователя
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+  //состояние залогинен ли пользователь
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -116,24 +123,29 @@ function App() {
       <div className="page">
         <div className="page__container">
           <Header />
-          <Main
-            onEditAvatarClick={handleEditAvatarClick}
-
-            onEditProfileClick={handleEditProfileClick}
-
-            onAddPlaceClick={handleAddPlaceClick}
-
-            onCardClick={handleCardClick}
-
-            onCardLike={handleCardLike}
-
-            onCardDelete={handleCardDelete}
-
-            cards={cards}
-          />
+          <Routes>
+            <Route path='/' 
+              element={
+                <ProtectedRoute 
+                  element={Main} 
+                  onEditAvatarClick={handleEditAvatarClick}
+                  onEditProfileClick={handleEditProfileClick}      
+                  onAddPlaceClick={handleAddPlaceClick}  
+                  onCardClick={handleCardClick}   
+                  onCardLike={handleCardLike}  
+                  onCardDelete={handleCardDelete}  
+                  cards={cards}
+                  loggedIn={loggedIn}
+                />
+              } 
+            />
+            //<Route path='/' element={loggedIn ? <Navigate to='/' /> : <Navigate to='/signin' replace />} /> 
+            <Route path='signup' element={<Register />} />
+            <Route path='signin' element={<Login />} />
+          </Routes>  
           <Footer />
           {/* попап Редактировать профиль */}
-          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
+          <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
           {/* попап Развернуть карточку */}
           <ImagePopup
             card={selectedCard}
@@ -148,9 +160,9 @@ function App() {
             <button className="popup__button-yes" type="submit">Да</button>
           </PopupWithForm>
           {/* попап Обновить фото профиля */}
-          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar}/>
+          <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
           {/* попап Добавить карточку */}
-          <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit}/>
+          <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
         </div>
       </div>
     </CurrentUserContext.Provider>
@@ -158,3 +170,5 @@ function App() {
 }
 
 export default App;
+
+
