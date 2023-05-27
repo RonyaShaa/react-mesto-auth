@@ -20,25 +20,20 @@ import success from '../images/галочка.svg'
 
 
 function App() {
-  // добавим в стейт переменные состояния попапов
+  // добавим в стейт переменные состояния
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
-  
   const [infoTooltipTitle, setInfoTooltipTitle] = React.useState('');
   const [toolTipImage, setTooltipImage] = React.useState('');
-
   const [selectedCard, setSelectedCard] = React.useState({});
-
   const [userEmail, setUserEmail] = React.useState('')
-  
-  //добавим в стейт переменную состояния текущего пользователя
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
-  //состояние залогинен ли пользователь
   const [loggedIn, setLoggedIn] = React.useState(false);
+
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -64,7 +59,6 @@ function App() {
         localStorage.setItem('jwt',res.token);
         setLoggedIn(true);
         setUserEmail(email);
-        // вызовем navigate и передадим путь
         navigate('/', {replace: true});
     })
     .catch(err => console.log(err));
@@ -73,7 +67,6 @@ function App() {
   function handleRegister(email,password){
     auth.register(email, password)
     .then(() => {
-    // вызовем navigate и передадим путь
       setIsInfoTooltipPopupOpen(true);
       setInfoTooltipTitle('Вы успешно зарегистрировались!');
       setTooltipImage(success);

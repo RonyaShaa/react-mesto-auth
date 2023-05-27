@@ -1,12 +1,5 @@
 import React from 'react';
-import {Routes, Route, Link, useNavigate} from 'react-router-dom';
-import * as auth from '../utils/auth';
-
-// • <Register /> - компонент практически полностью 
-// дублирует логику компонента Login, 
-// но при сабмите форма вызывает другую функцию. 
-// Она отправляет данные через функцию регистрации 
-// и получает ответ что все ок, или не совсем
+import {Link} from 'react-router-dom';
 
 const Register = ({onRegister}) => {
 
@@ -15,9 +8,6 @@ const Register = ({onRegister}) => {
     email: '',
     password: ''
   })
-
-  // хук навигации
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -63,7 +53,7 @@ const Register = ({onRegister}) => {
         <Link to='/signin' className='register__link'>Уже зарегистрированы? Войти</Link>
       </form>
     </section>
-)
+  )
 }
 
 export default Register;

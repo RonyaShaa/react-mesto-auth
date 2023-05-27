@@ -1,4 +1,5 @@
 export const BASE_URL= 'https://auth.nomoreparties.co';
+
 // • функция register - принимает почту и пароль, 
 // отправляет запрос регистрации на /signup
 
