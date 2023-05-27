@@ -1,35 +1,34 @@
 import React from 'react';
 
+const InfoTooltip = ({isOpen, onClose, title, image}) => {
+  React.useEffect(() => {
+    //ограничиваем навешивание обработчика: если не открыт, то не нужно навешивать
+    if(!isOpen) return;
+    // объявляем внутри useEffect функцию, чтобы она не теряла ссылку при перерисовке компонента
+    const closeByEsc = (e) => {
+      if(e.key === 'Escape') {
+        onClose();
+      }
+    }
+    document.addEventListener('keydown', closeByEsc)
+    //обязательно удаляем обработчик
+    return () => document.removeEventListener('keydown', closeByEsc)
+    // обязательно следим за isOpen, чтобы срабатывало только при открытии, а не всегда
+  }, [isOpen, onClose])
 
-// • <InfoTooltip /> - просто старый добрый попап, 
-// который показывает сообщение об успешной регистрации, 
-// или наоборот - о произошедшей при регистрации ошибке. 
-// Управлять поведением этого попапа можно 
-// через state’ы в компоненте App.js
-// Так же нужно доработать компонент <Header />. 
-// Теперь в шапке в зависимости от страницы, на которой мы находимся, 
-// будут так же отображаться разные 
-// ссылки: “Регистрация“, “Войти“, “[email пользователя] Выйти“.
-//  Для отображения соответствующей ссылке на странице 
-//  можно использовать <Route />
+  //создаем обработчик оверлея
+  const handleOverlay = (e) => {
+    if(e.target === e.currentTarget) {
+      onClose();
+    }
+  }
 
-const InfoTooltip = () => {
-  // return (
-  //   <div className='popup popup_type_success popup_opened'>
-  //     <div className="popup__container">
-  //       <button className="popup__close" type="button" />
-  //       <div className='popup__img-success ' />
-  //       <p className='popup__text'>Вы успешно зарегистрировались!</p>
-  //     </div>
-  //   </div>
-  // )
   return (
-    <div className='popup popup_type_success popup_opened'>
+    <div className={`popup ${isOpen ? 'popup_opened' : ''}`}>
       <div className="popup__container">
-        <button className="popup__close" type="button" />
-        <div className='popup__img-fail' />
-        <p className='popup__text'>Что-то пошло не так!
-Попробуйте ещё раз.</p>
+        <button className="popup__close" type="button" onClick={onClose}/>
+        <img className='popup__img' src={image}/>
+        <p className='popup__text'>{title}</p>
       </div>
     </div>
   )

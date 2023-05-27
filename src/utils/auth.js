@@ -1,9 +1,9 @@
-export const BASE_URL= 'https://auth.nomoreparties.co/';
+export const BASE_URL= 'https://auth.nomoreparties.co';
 // • функция register - принимает почту и пароль, 
 // отправляет запрос регистрации на /signup
 
 export const register = (email,password) => {
-  return fetch (`${BASE_URL}signup`, {
+  return fetch (`${BASE_URL}/signup`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -12,7 +12,7 @@ export const register = (email,password) => {
     body: JSON.stringify({email,password})
   })
     .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
-  };
+};
 
 // • функция login - принимает почту и пароль, 
 // отправляет запрос авторизации на /signin . 
@@ -20,30 +20,17 @@ export const register = (email,password) => {
 // сохранить в localStorage
 
 
-export const login = (id, password) => {
-  return fetch (`${BASE_URL}/auth/local`, {
+export const login = (email, password) => {
+  return fetch (`${BASE_URL}/signin`, {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      id,
-      password,
-    })
-    .then((response) => {
-      return response.json();
-    })
-    // .then((data) => {
-    //   if(data.user) {
-    //     localStorage.setItem('jwt', data.jwt);
-    //     return data;
-    //   } else {
-    //     return;
-    //   }
-    // })
+    body: JSON.stringify({email,password,})
   })
-}
+    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+};
 
 // • функция checkToken - принимает jwt, 
 // отправляет запрос на /users/me 
@@ -58,11 +45,6 @@ export const checkToken = (token) => {
       'Autorization': `Bearer ${token}`
     },
   })
-  .then((response) => {
-    return response.json();
-  })
-  .then((data) => {
-    return data;
-  })
+  .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
 }
 

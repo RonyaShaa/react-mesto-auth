@@ -14,6 +14,9 @@ import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
 import {ProtectedRoute} from './ProtectedRoute'
+import * as auth from '../utils/auth';
+import fail from '../images/крестик.svg'
+import success from '../images/галочка.svg'
 
 
 function App() {
@@ -22,12 +25,21 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
+  const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
+  
+  const [infoTooltipTitle, setInfoTooltipTitle] = React.useState('');
+  const [toolTipImage, setTooltipImage] = React.useState('');
+
   const [selectedCard, setSelectedCard] = React.useState({});
+
+  const [userEmail, setUserEmail] = React.useState('')
+  
   //добавим в стейт переменную состояния текущего пользователя
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
   //состояние залогинен ли пользователь
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     Promise.all([api.getUserInfo(), api.getInitialCards()])
@@ -36,10 +48,56 @@ function App() {
         //получим массив карточек с сервера
         setCurrentUser(userData)
         setCards(cardData);
+        tokenCheck();
       }).catch((err) => {
         console.log(err); // выведем ошибку в консоль 
       });
   }, []);//при перерендере будет проверяться массив зависимостей
+
+  function handleLogin(email,password){
+    auth.login(email, password)
+    .then((res) => {
+        // сохраняем jwt
+        localStorage.setItem('jwt',res.token);
+        setLoggedIn(true);
+        setUserEmail(email);
+        // вызовем navigate и передадим путь
+        navigate('/', {replace: true});
+    })
+    .catch(err => console.log(err));
+  }
+
+  function handleRegister(email,password){
+    auth.register(email, password)
+    .then(() => {
+    // вызовем navigate и передадим путь
+      setIsInfoTooltipPopupOpen(true);
+      setInfoTooltipTitle('Вы успешно зарегистрировались!');
+      setTooltipImage(success);
+      navigate('/signin');
+    })
+    .catch((err) => {
+      console.log(err);
+      setIsInfoTooltipPopupOpen(true);
+      setInfoTooltipTitle('Что-то пошло не так! Попробуйте еще раз.');
+      setTooltipImage(fail);
+    })
+  }
+
+  //сохраним авторизованного пользователя
+  function tokenCheck(){
+    const jwt = localStorage.getItem('jwt');
+    if(jwt){
+      auth.checkToken(jwt)
+      .then(() => {
+        setLoggedIn(true);
+        // вызовем navigate и передадим путь
+        navigate('/', {replace: true});
+      })
+      .catch(err => console.log(err));
+    }
+  }
+
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -59,6 +117,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setSelectedCard({});
     setIsImagePopupOpen(false);
+    setIsInfoTooltipPopupOpen(false);
   }
 
   function handleCardClick(card) {
@@ -122,7 +181,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header />
+          <Header email={userEmail}/>
           <Routes>
             <Route path='/' 
               element={
@@ -139,11 +198,18 @@ function App() {
                 />
               } 
             />
-            //<Route path='/' element={loggedIn ? <Navigate to='/' /> : <Navigate to='/signin' replace />} /> 
-            <Route path='signup' element={<Register />} />
-            <Route path='signin' element={<Login />} />
+            <Route path='/' element={loggedIn ? <Navigate to='/' /> : <Navigate to='/signin' replace />} /> 
+            <Route path='signup' element={<Register onRegister={handleRegister}/>} />
+            <Route path='signin' element={<Login onLogin={handleLogin} />} />
           </Routes>  
           <Footer />
+          {/* попап Регистрации */}
+          <InfoTooltip 
+            isOpen={isInfoTooltipPopupOpen} 
+            onClose={closeAllPopups} 
+            title={infoTooltipTitle}
+            image={toolTipImage}
+          />
           {/* попап Редактировать профиль */}
           <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
           {/* попап Развернуть карточку */}

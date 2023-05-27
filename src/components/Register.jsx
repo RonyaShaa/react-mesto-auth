@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Routes, Route, Link, useNavigate} from 'react-router-dom';
 import * as auth from '../utils/auth';
 
 // • <Register /> - компонент практически полностью 
@@ -8,7 +8,7 @@ import * as auth from '../utils/auth';
 // Она отправляет данные через функцию регистрации 
 // и получает ответ что все ок, или не совсем
 
-const Register = () => {
+const Register = ({onRegister}) => {
 
   // стейт формы
   const [formValue, setFormValue] = React.useState({
@@ -16,8 +16,8 @@ const Register = () => {
     password: ''
   })
 
-// хук навигации
-const navigate = useNavigate();
+  // хук навигации
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const {name, value} = e.target;
@@ -29,17 +29,8 @@ const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     const {email, password} = formValue;
-
-    auth.register(email, password)
-    .then(() => {
-    // вызовем navigate и передадим путь
-      navigate('/signin');
-    })
-    .catch((err) => {
-      console.log(err);
-    })
+    onRegister(email,password);
   }
 
   return (
@@ -69,7 +60,7 @@ const navigate = useNavigate();
           required
         />
         <button className="register__button" type="submit">Зарегистрироваться</button>
-        <a href='#' className='register__link'>Уже зарегистрированы? Войти</a>
+        <Link to='/signin' className='register__link'>Уже зарегистрированы? Войти</Link>
       </form>
     </section>
 )

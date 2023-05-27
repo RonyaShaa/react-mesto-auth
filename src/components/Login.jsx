@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link, useNavigate} from 'react-router-dom';
+import * as auth from '../utils/auth';
 
 
 // •  <Login /> - компонент для авторизации пользователя.
@@ -9,51 +10,46 @@ import {Link, useNavigate} from 'react-router-dom';
 //   Сама функция должна быть описана выше, на уровне app.js .
 
 
-const Login = () => {
-  // const [formValue, setFormValue] = useState({
-  //   username: '',
-  //   password: ''
-  // })
-  // const navigate = useNavigate();
+const Login = ({onLogin}) => {
 
-  // const handleChange = (e) => {
-  //   const {name, value} = e.target;
+  const [formValue, setFormValue] = React.useState({
+    email: '',
+    password: ''
+  })
 
-  //   setFormValue({
-  //     ...formValue,
-  //     [name]: value
-  //   });
-  // }
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (!formValue.username || !formValue.password){
-  //     return;
-  //   }
-  //   auth.authorize(formValue.username, formValue.password)
-  //     .then((data) => {
-  //       if (data.jwt){
-  //         setFormValue({username: '', password: ''});
-  //         handleLogin();
-  //         navigate('/diary', {replace: true});
-  //       }
-  //     })
-  //     .catch(err => console.log(err));
-  // }
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+
+    setFormValue({
+      ...formValue,
+      [name]: value
+    });
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //проверка не пустые ли поля
+    if (!formValue.email || !formValue.password){
+      return;
+    }
+    const {email, password} = formValue;
+    onLogin(email, password);
+  }
 
   return (
       <section className='login'>
         <p className="login__text">
           Вход
         </p>
-        <form /*onSubmit={handleSubmit}*/ className="login__form">
+        <form onSubmit={handleSubmit} className="login__form">
           <input
             id='input-email'
             className='login__input login__input_type_email'
             type='email'
             placeholder='Email'
             name='email'
-            //value={}
-            //onChange={handleChange}
+            value={formValue.email}
+            onChange={handleChange}
             required
           />
           <input
@@ -62,8 +58,8 @@ const Login = () => {
             type='password'
             placeholder='Пароль'
             name='password'
-            //value={}
-            //onChange={handleChange}
+            value={formValue.password}
+            onChange={handleChange}
             required
           />
           <button className="login__button" type="submit">Войти</button>
