@@ -16,14 +16,12 @@ function Main({onEditAvatarClick, onEditProfileClick, onAddPlaceClick, onCardCli
         <div className="profile__button-avatar" onClick={onEditAvatarClick}>
           <img
             className="profile__photo"
-            // src={userAvatar}
             src={currentUser.avatar}
             alt="Фотография владельца профиля"
           />
         </div>
         <div className="profile__info">
           <h1 className="profile__name">
-            {/* {userName} */}
             {currentUser.name}
           </h1>
           <button
@@ -38,7 +36,6 @@ function Main({onEditAvatarClick, onEditProfileClick, onAddPlaceClick, onCardCli
             />
           </button>
           <p className="profile__interests">
-            {/* {userDescription} */}
             {currentUser.about}
           </p>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, Route, Routes} from 'react-router-dom';
 
-function Header({email}) {
+function Header({email, handleSignout}) {
  
     return (
       <header className="header">
@@ -20,7 +20,7 @@ function Header({email}) {
             element={
               <>
                 <p className='header__user-email'>{email}</p>
-                <Link to='/signup' className='header__link'>Выйти</Link>
+                <Link to='/signup' className='header__link' onClick={handleSignout}>Выйти</Link>
               </>
             }
           />

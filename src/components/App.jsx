@@ -48,11 +48,14 @@ function App() {
         //получим массив карточек с сервера
         setCurrentUser(userData)
         setCards(cardData);
-        tokenCheck();
       }).catch((err) => {
         console.log(err); // выведем ошибку в консоль 
       });
   }, []);//при перерендере будет проверяться массив зависимостей
+
+  React.useEffect(() => {
+    tokenCheck()
+  },[]);
 
   function handleLogin(email,password){
     auth.login(email, password)
@@ -96,6 +99,12 @@ function App() {
       })
       .catch(err => console.log(err));
     }
+  }
+
+  function handleSignout(){
+    setLoggedIn(false);
+    localStorage.removeItem('jwt');
+    navigate('/signin');
   }
 
 
@@ -181,7 +190,7 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <div className="page__container">
-          <Header email={userEmail}/>
+          <Header email={userEmail} handleSignout={handleSignout}/>
           <Routes>
             <Route path='/' 
               element={
