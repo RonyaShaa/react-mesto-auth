@@ -1,5 +1,14 @@
 export const BASE_URL= 'https://auth.nomoreparties.co';
 
+function checkResponse(res){
+  if(res.ok) {
+    //возвращаем ответ сервера
+    return res.json(); 
+  }
+  return Promise.reject(`Ошибка: ${res.status}`)
+};
+
+
 // • функция register - принимает почту и пароль, 
 // отправляет запрос регистрации на /signup
 
@@ -12,7 +21,7 @@ export const register = (email,password) => {
     },
     body: JSON.stringify({email,password})
   })
-    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+    .then(checkResponse);
 };
 
 // • функция login - принимает почту и пароль, 
@@ -30,7 +39,7 @@ export const login = (email, password) => {
     },
     body: JSON.stringify({email,password})
   })
-    .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+  .then(checkResponse);
 };
 
 // • функция checkToken - принимает jwt, 
@@ -46,6 +55,6 @@ export const checkToken = (token) => {
       'Authorization': `Bearer ${token}`
     },
   })
-  .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+  .then(checkResponse);
 }
 
