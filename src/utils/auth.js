@@ -43,7 +43,7 @@ export const checkToken = (token) => {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'Autorization': `Bearer ${token}`
+      'Authorization': `Bearer ${token}`
     },
   })
   .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))

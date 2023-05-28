@@ -83,10 +83,13 @@ function App() {
   //сохраним авторизованного пользователя
   function tokenCheck(){
     const jwt = localStorage.getItem('jwt');
+    console.log(jwt);
     if(jwt){
       auth.checkToken(jwt)
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         setLoggedIn(true);
+        setUserEmail(res.data.email)
         // вызовем navigate и передадим путь
         navigate('/', {replace: true});
       })
