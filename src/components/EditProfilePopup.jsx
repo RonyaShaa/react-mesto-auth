@@ -19,7 +19,6 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser}) {
     setValues({
       ...values,
       [e.target.name]: e.target.value,
-      [e.target.about]: e.target.value,
     })
   }
 

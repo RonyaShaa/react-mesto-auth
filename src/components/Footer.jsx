@@ -1,7 +1,7 @@
 function Footer() {
   
-  let today = new Date();
-  let year = today.getUTCFullYear();
+  const today = new Date();
+  const year = today.getUTCFullYear();
 
   return (
     <footer className="footer">

@@ -83,11 +83,9 @@ function App() {
   //сохраним авторизованного пользователя
   function tokenCheck(){
     const jwt = localStorage.getItem('jwt');
-    console.log(jwt);
     if(jwt){
       auth.checkToken(jwt)
       .then((res) => {
-        console.log(res);
         setLoggedIn(true);
         setUserEmail(res.data.email)
         // вызовем navigate и передадим путь
@@ -227,9 +225,8 @@ function App() {
           <PopupWithForm
             title='Вы уверены?'
             name='delete-card'
-          >
-            <button className="popup__button-yes" type="submit">Да</button>
-          </PopupWithForm>
+            buttonText='Да'
+          />
           {/* попап Обновить фото профиля */}
           <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
           {/* попап Добавить карточку */}

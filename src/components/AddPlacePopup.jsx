@@ -13,7 +13,6 @@ function AddPlacePopup({isOpen, onClose, onAddPlace}) {
     setValues({
       ...values,
       [e.target.name]: e.target.value,
-      [e.target.link]: e.target.value,
     })
   }
   function handleSubmit (e){
